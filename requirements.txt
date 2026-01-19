@@ -1,0 +1,11 @@
+langchain
+langchain-openai
+langchain-community
+langchain-text-splitters
+faiss-cpu
+pypdf
+
+
+# User: What is this document about?
+# User: Explain it in simple terms
+# User: how is it used?

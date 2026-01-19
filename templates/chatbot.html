@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">AI Chatbot</div>
+
+    <div class="chat-box" id="chat-box">
+        <div class="message bot-message">
+            Hello! I'am AI Chatbot, Ask me anything 😊
+        </div>
+    </div>
+
+    <form class="chat-input" id="chat-form">
+        <input
+            type="text"
+            id="message"
+            placeholder="Ask me anything..."
+            required
+        />
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+<script>
+    const chatBox = document.getElementById("chat-box");
+    const form = document.getElementById("chat-form");
+    const input = document.getElementById("message");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const userMessage = input.value.trim();
+        if (!userMessage) return;
+
+        // Show user message
+        chatBox.innerHTML += `
+            <div class="message user-message">
+                ${userMessage}
+            </div>
+        `;
+
+        input.value = "";
+
+        // Send message to backend
+        const response = await fetch("/ask", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `message=${encodeURIComponent(userMessage)}`
+        });
+
+        const data = await response.json();
+
+        // Show bot reply
+        chatBox.innerHTML += `
+            <div class="message bot-message">
+                ${data.reply}
+            </div>
+        `;
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+</script>
+
+</body>
+</html>
