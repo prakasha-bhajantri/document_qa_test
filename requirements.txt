@@ -1,11 +1,15 @@
-langchain
-langchain-openai
-langchain-community
-langchain-text-splitters
-faiss-cpu
-pypdf
+# Core LLM
+langchain>=0.2.0
+langchain-openai>=0.1.0
+openai>=1.40.0
 
+# LangGraph
+langgraph>=0.2.0
 
-# User: What is this document about?
-# User: Explain it in simple terms
-# User: how is it used?
+# Web server
+flask>=3.0.0
+python-dotenv>=1.0.1
+
+# Typing & utilities (avoid runtime issues)
+typing-extensions>=4.9.0
+pydantic>=2.7.0
