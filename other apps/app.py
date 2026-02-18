@@ -30,7 +30,7 @@ question_rewriter_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 # 3. Load & Index Document (RAG)
 # ===============================
 
-loader = PyPDFLoader("Introduction_RAG_GenAI_Application-1.pdf")
+loader = PyPDFLoader("./data/Introduction_RAG_GenAI_Application-1.pdf")
 documents = loader.load()
 
 splitter = RecursiveCharacterTextSplitter(
