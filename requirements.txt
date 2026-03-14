@@ -3,13 +3,18 @@ langchain>=0.2.0
 langchain-openai>=0.1.0
 openai>=1.40.0
 
+# Fastapi
+fastapi==0.135.1
+uvicorn
+
 # LangGraph
 langgraph>=0.2.0
 
-# Web server
-flask>=3.0.0
 python-dotenv>=1.0.1
 
 # Typing & utilities (avoid runtime issues)
 typing-extensions>=4.9.0
 pydantic>=2.7.0
+
+python-multipart==0.0.22
+

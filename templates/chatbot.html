@@ -1,72 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>AI Chatbot</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<meta charset="UTF-8">
+<title>Sports AI Assistant</title>
+<link rel="icon" type="image/png" href="/static/sport_log_3.png">
+
+<link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 </head>
+
 <body>
 
-<div class="chat-container">
-    <div class="chat-header">AI Chatbot</div>
+<div class="app-container">
 
-    <div class="chat-box" id="chat-box">
-        <div class="message bot-message">
-            Hello! I'am AI Chatbot, Ask me anything 😊
+    <!-- LEFT CHAT PANEL -->
+
+    <div class="chat-container">
+
+        <div class="chat-header">
+            <img src="/static/sport_log_2.png" class="logo">
+            Sports AI Assistant
         </div>
+
+        <div class="chat-box" id="chat-box">
+
+            <div class="empty-state" id="empty-state">
+
+                <div class="empty-icon">🏆</div>
+
+                <div class="empty-title">
+                    Ask anything about sports
+                </div>
+
+                <div class="empty-sub">
+                    Rules • Coaching • Predictions • Analytics
+                </div>
+
+            </div>
+        </div>
+
+        <form class="chat-input" id="chat-form">
+
+            <div class="input-container">
+
+                <input
+                    type="text"
+                    id="message"
+                    placeholder="Message Sports Assistant"
+                    required
+                />
+
+                <button type="button" id="mic-btn" class="icon-btn">🎤</button>
+
+                <button type="submit" id="send-btn" class="send-btn" disabled>
+                    ↑
+                </button>
+
+            </div>
+
+        </form>          
     </div>
 
-    <form class="chat-input" id="chat-form">
-        <input
-            type="text"
-            id="message"
-            placeholder="Ask me anything..."
-            required
-        />
-        <button type="submit">Send</button>
-    </form>
+
+    <!-- RIGHT PANEL -->
+
+    <div class="side-panel">
+
+        <div class="panel-section">
+
+            <h3>Quick Sports Tools</h3>
+
+            <button onclick="askQuick('Tell me cricket rules')">
+                Cricket Rules
+            </button>
+
+            <button onclick="askQuick('Teach me football basics')">
+                Football Training
+            </button>
+
+            <button onclick="askQuick('How to improve cricket batting')">
+                Batting Tips
+            </button>
+
+            <button onclick="askQuick('Predict match outcome if team scores 300 runs')">
+                Match Prediction
+            </button>
+
+        </div>
+
+        <div class="panel-section">
+
+            <h3>Example Questions</h3>
+
+            <ul>
+                <li>Who won the 2023 Cricket World Cup?</li>
+                <li>How to improve football dribbling?</li>
+                <li>What is LBW rule?</li>
+                <li>How to train like a professional athlete?</li>
+            </ul>
+
+        </div>
+
+    </div>
+
 </div>
 
+
 <script>
-    const chatBox = document.getElementById("chat-box");
-    const form = document.getElementById("chat-form");
-    const input = document.getElementById("message");
 
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+const chatBox = document.getElementById("chat-box");
+const form = document.getElementById("chat-form");
+const input = document.getElementById("message");
+const sendBtn = document.getElementById("send-btn");
+const micBtn = document.getElementById("mic-btn");
 
-        const userMessage = input.value.trim();
-        if (!userMessage) return;
+let isRecording = false;
 
-        // Show user message
-        chatBox.innerHTML += `
-            <div class="message user-message">
-                ${userMessage}
-            </div>
-        `;
 
-        input.value = "";
+/* SPEECH RECOGNITION SETUP */
 
-        // Send message to backend
-        const response = await fetch("/ask", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: `message=${encodeURIComponent(userMessage)}`
-        });
+const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
 
-        const data = await response.json();
+const recognition = new SpeechRecognition();
 
-        // Show bot reply
-        chatBox.innerHTML += `
-            <div class="message bot-message">
-                ${data.reply}
-            </div>
-        `;
+recognition.lang = "en-US";
+recognition.continuous = false;
+recognition.interimResults = false;
 
-        chatBox.scrollTop = chatBox.scrollHeight;
+
+/* MIC BUTTON CLICK */
+
+micBtn.addEventListener("click", () => {
+    recognition.start();
+});
+
+/* RECORDING STARTED */
+
+recognition.onstart = () => {
+
+    micBtn.style.color = "#ff3b30";
+    micBtn.classList.add("recording");
+
+    input.placeholder = "Listening...";
+
+};
+
+
+/* CAPTURE VOICE RESULT */
+
+recognition.onresult = function(event){
+
+    const transcript = event.results[0][0].transcript;
+
+    input.value = transcript;
+
+    sendBtn.disabled = false;
+
+};
+
+
+/* RECORDING ENDED */
+
+recognition.onend = () => {
+
+    micBtn.style.color = "#555";
+    micBtn.classList.remove("recording");
+
+    input.placeholder = "Message Sports Assistant";
+
+    isRecording = false;
+
+};
+
+
+/* ENABLE / DISABLE SEND BUTTON */
+
+input.addEventListener("input", () => {
+
+    if(input.value.trim() === ""){
+        sendBtn.disabled = true;
+    }else{
+        sendBtn.disabled = false;
+    }
+
+});
+
+form.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const empty = document.getElementById("empty-state");
+    if(empty){
+        empty.remove();
+    }
+
+    sendBtn.disabled = true;
+
+    const userMessage = input.value.trim();
+    if (!userMessage) return;
+
+    /* SHOW USER MESSAGE */
+
+    chatBox.innerHTML += `
+        <div class="message user-message">
+            ${userMessage}
+        </div>
+    `;
+
+    input.value = "";
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    /* SHOW TYPING INDICATOR */
+
+    const typing = document.createElement("div");
+    typing.className = "typing";
+    typing.id = "typing-indicator";
+
+    typing.innerHTML = `<span></span><span></span><span></span>`;
+    chatBox.appendChild(typing);
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    /* API CALL */
+
+    const response = await fetch("/ask", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `message=${encodeURIComponent(userMessage)}`
     });
+
+    const data = await response.json();
+    
+
+    /* REMOVE TYPING INDICATOR */
+
+    const loader = document.getElementById("typing-indicator");
+    if(loader) loader.remove();
+
+    /* SHOW BOT RESPONSE */
+
+    chatBox.innerHTML += `
+        <div class="message bot-message">
+            ${marked.parse(data.reply)}
+        </div>
+    `;
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    sendBtn.disabled = false;
+
+});
+
+
+function askQuick(text){
+
+    input.value = text;
+    form.dispatchEvent(new Event("submit"));
+
+}
+
 </script>
 
 </body>

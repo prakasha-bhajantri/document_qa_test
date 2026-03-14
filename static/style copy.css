@@ -148,117 +148,60 @@ body {
 
 /* INPUT AREA */
 
-.chat-input{
-    display:flex;
-    align-items:center;
-    border-top:1px solid #eee;
-    background:white;
-    gap:8px;
-    padding:8px;
+.chat-input {
+
+    display: flex;
+
+    border-top: 1px solid #eee;
+
+    background: white;
+
 }
 
 
 /* INPUT FIELD */
-.chat-input{
-    padding:12px;
-    background:white;
-    border-top:1px solid #eee;
+
+.chat-input input {
+
+    flex: 1;
+
+    border: none;
+
+    padding: 16px;
+
+    font-size: 15px;
+
+    outline: none;
+
 }
 
-.input-container{
-
-    display:flex;
-    align-items:center;
-
-    background:#f1f1f1;
-
-    border-radius:30px;
-
-    padding:10px 14px;
-
-    gap:10px;
-}
-
-/* TEXT INPUT */
-
-.input-container input{
-
-    flex:1;
-
-    border:none;
-    outline:none;
-
-    background:transparent;
-
-    font-size:14px;
-
-    padding:6px;
-}
-
-/* LEFT ICON BUTTONS */
-
-.icon-btn{
-
-    border:none;
-    background:none;
-
-    font-size:18px;
-
-    cursor:pointer;
-
-    opacity:0.7;
-}
-
-.icon-btn:hover{
-    opacity:1;
-}
-
-/* MIC BUTTON */
-
-#mic-btn{
-    font-size:18px;
-}
 
 /* SEND BUTTON */
 
-.send-btn{
+.chat-input button {
 
-    border:none;
+    background: #ff7a18;
 
-    width:34px;
-    height:34px;
+    border: none;
 
-    border-radius:50%;
+    color: white;
 
-    background:#ff7a18;
+    padding: 0 24px;
 
-    color:white;
+    font-size: 15px;
 
-    font-size:16px;
+    cursor: pointer;
 
-    cursor:pointer;
+    transition: 0.2s;
+
 }
 
-.send-btn:disabled{
+.chat-input button:hover {
 
-    background:#ccc;
-    cursor:not-allowed;
+    background: #e36405;
+
 }
 
-.input-container{
-    display:flex;
-    align-items:center;
-
-    background:#f1f1f1;
-
-    border-radius:30px;
-
-    padding:10px 14px;
-
-    gap:10px;
-
-    width:100%;   /* ADD THIS */
-}
 
 /* RIGHT PANEL */
 
@@ -482,7 +425,7 @@ body {
     background: url("/static/sports_logo_1.png") center no-repeat;
     background-size: 420px;
 
-    opacity: 0.15;
+    opacity: 0.20;
 
     pointer-events: none;
 }
@@ -491,75 +434,4 @@ body {
     height:28px;
     margin-right:10px;
     vertical-align:middle;
-}
-
-
-#mic-btn{
-    border:none;
-    background:none;
-    font-size:18px;
-    cursor:pointer;
-    padding:0 10px;
-}
-
-.recording{
-    animation: micPulse 1.2s infinite;
-}
-
-@keyframes micPulse{
-
-    0%{ transform:scale(1); }
-
-    50%{ transform:scale(1.2); }
-
-    100%{ transform:scale(1); }
-
-}
-
-.message{
-    animation:messageSlide 0.2s ease;
-}
-
-@keyframes messageSlide{
-    from{
-        opacity:0;
-        transform:translateY(8px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-.panel-section button{
-    border-radius:20px;
-    font-size:13px;
-}
-
-/* EMPTY STATE */
-
-.empty-state{
-    margin:auto;
-    text-align:center;
-    color:#555;
-}
-
-.empty-icon{
-    font-size:36px;
-    margin-bottom:10px;
-}
-
-.empty-title{
-    font-size:18px;
-    font-weight:600;
-    margin-bottom:6px;
-}
-
-.empty-sub{
-    font-size:13px;
-    color:#888;
-}
-
-.empty-state{
-    opacity:0.90;
 }
